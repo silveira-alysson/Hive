@@ -1,0 +1,228 @@
+/* exercise 1 */
+SELECT COUNT(scorecard) from original;
+
+/* exercise 2 */
+select count(distinct(team)) from
+(SELECT distinct(team1) as team from original 
+union all
+SELECT distinct(team2) as team from original) unionresult;
+
+/* exercise 3.1 */
+select winner, count(winner) as wons 
+from
+(select winner from original) winners
+group by winner 
+sort by wons desc limit 1;
+
+/* exercise 3.2 */
+select * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear
+FROM
+(SELECT winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+WHERE matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY matchdecade, wons desc) t3
+WHERE matchdecade = 1970
+SORT BY wons desc limit 1
+
+union all 
+
+select * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear
+FROM
+(SELECT winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+WHERE matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY matchdecade, wons desc) t3
+WHERE matchdecade = 1980
+SORT BY wons desc limit 1
+
+union all
+
+select * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear
+FROM
+(SELECT winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+WHERE matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY matchdecade, wons desc) t3
+WHERE matchdecade = 1990
+SORT BY wons desc limit 1
+
+union all
+
+select * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear
+FROM
+(SELECT winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+WHERE matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY matchdecade, wons desc) t3
+WHERE matchdecade = 2000
+SORT BY wons desc limit 1
+
+union all
+
+select * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear
+FROM
+(SELECT winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+WHERE matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY matchdecade, wons desc) t3
+WHERE matchdecade = 2010
+SORT BY wons desc limit 1
+
+
+/* exercise 3.3 */
+SELECT margin, count(margin) as nmargin
+from continous
+GROUP BY margin
+SORT BY nmargin desc
+
+
+
+/* exercise 3.4 */
+
+SELECT * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+t1.scorecard,
+t1.winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear,
+venue_team1 as host_country
+FROM
+(SELECT scorecard, winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+join continous on t1.scorecard = continous.scorecard
+where t1.winner <> venue_team1 and matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY  matchdecade, wons desc)t3
+WHERE matchdecade = 1970
+SORT BY wons desc limit 1
+
+union all 
+
+SELECT * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+t1.scorecard,
+t1.winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear,
+venue_team1 as host_country
+FROM
+(SELECT scorecard, winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+join continous on t1.scorecard = continous.scorecard
+where t1.winner <> venue_team1 and matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY  matchdecade, wons desc)t3
+WHERE matchdecade = 1980
+SORT BY wons  desc limit 1
+
+union all 
+
+SELECT * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+t1.scorecard,
+t1.winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear,
+venue_team1 as host_country
+FROM
+(SELECT scorecard, winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+join continous on t1.scorecard = continous.scorecard
+where t1.winner <> venue_team1 and matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY  matchdecade, wons desc)t3
+WHERE matchdecade = 1990
+SORT BY wons desc limit 1
+
+union all
+
+SELECT * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+t1.scorecard,
+t1.winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear,
+venue_team1 as host_country
+FROM
+(SELECT scorecard, winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+join continous on t1.scorecard = continous.scorecard
+where t1.winner <> venue_team1 and matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY  matchdecade, wons desc)t3
+WHERE matchdecade = 2000
+SORT BY wons desc limit 1
+
+union all
+
+SELECT * from
+(SELECT matchdecade, winner, count(winner) as wons
+FROM
+(SELECT
+t1.scorecard,
+t1.winner,
+(matchyear-
+IF(cast(substr(matchyear, length(matchyear), 1) as int) = 0, 10,cast(substr(matchyear, length(matchyear), 1) as int))) as matchdecade,
+matchyear,
+venue_team1 as host_country
+FROM
+(SELECT scorecard, winner, if(cast(substr(matchdate, length(matchdate) - 1, 2) as int)>60, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+1900, cast(substr(matchdate, length(matchdate) - 1, 2) as int)+2000)  as matchyear
+FROM original) t1
+join continous on t1.scorecard = continous.scorecard
+where t1.winner <> venue_team1 and matchyear < 2018) t2
+GROUP BY matchdecade, winner
+SORT BY  matchdecade, wons desc)t3
+WHERE matchdecade = 2010
+SORT BY wons desc limit 1
